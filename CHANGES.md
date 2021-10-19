@@ -4,12 +4,22 @@ All notable changes to this project will be documented in this file.
 
 Note - All hash comments refer to the issue number. Eg. #169 refers to https://github.com/mdjnelson/moodle-mod_customcert/issues/169.
 
-## [3.11.1] - 2021-XX-YY
+## [3.11.2] - 2021-??-??
+
+### Fixed
+- Fix places not using the multi-language filter (#433).
+- Fix user IDs in the issue table not being mapped during restore (#449).
+- Fix emails displaying HTML entities encoded (#457).
+
+### Added
+- You can now choose the course short or full name to display (#415).
+ 
+## [3.11.1] - 2021-06-13
 
 ### Fixed
 - Usage of deprecated functions (#423)
 
-## [3.10.1] - 2021-XX-YY
+## [3.10.1] - 2021-06-13
 
 ### Added
 - Usage of github actions (#407).
@@ -20,6 +30,8 @@ Note - All hash comments refer to the issue number. Eg. #169 refers to https://g
 - Managers are now able to download their students' certificates (#412).
 - Users being able to view the certificate before the required time set (#403).
 - Fixed the issue with displaying PDF when debugging is ON (#420).
+- Using incorrect context when sending emails (#402).
+- Use `cron_setup_user` when sending emails (#414).
 
 ## [3.8.5] - 2020-11-26
 

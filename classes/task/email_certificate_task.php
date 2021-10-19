@@ -86,6 +86,9 @@ class email_certificate_task extends \core\task\scheduled_task {
             // Get the context.
             $context = \context::instance_by_id($customcert->contextid);
 
+            // Set the $PAGE context - this ensure settings, such as language, are kept and don't default to the site settings.
+            $PAGE->set_context($context);
+
             // Get the person we are going to send this email on behalf of.
             $userfrom = \core_user::get_noreply_user();
 
@@ -178,6 +181,9 @@ class email_certificate_task extends \core\task\scheduled_task {
 
             // Now, email the people we need to.
             foreach ($issuedusers as $user) {
+                // Set up the user.
+                cron_setup_user($user);
+
                 $userfullname = fullname($user);
                 $info->userfullname = $userfullname;
 
@@ -207,7 +213,8 @@ class email_certificate_task extends \core\task\scheduled_task {
                     $subject = get_string('emailstudentsubject', 'customcert', $info);
                     $message = $textrenderer->render($renderable);
                     $messagehtml = $htmlrenderer->render($renderable);
-                    email_to_user($user, fullname($userfrom), $subject, $message, $messagehtml, $tempfile, $filename);
+                    email_to_user($user, fullname($userfrom), html_entity_decode($subject), $message, $messagehtml,
+                        $tempfile, $filename);
                 }
 
                 if ($customcert->emailteachers) {
@@ -218,8 +225,8 @@ class email_certificate_task extends \core\task\scheduled_task {
                     $message = $textrenderer->render($renderable);
                     $messagehtml = $htmlrenderer->render($renderable);
                     foreach ($teachers as $teacher) {
-                        email_to_user($teacher, fullname($userfrom), $subject, $message, $messagehtml, $tempfile,
-                            $filename);
+                        email_to_user($teacher, fullname($userfrom), html_entity_decode($subject), $message, $messagehtml,
+                            $tempfile, $filename);
                     }
                 }
 
@@ -238,8 +245,8 @@ class email_certificate_task extends \core\task\scheduled_task {
                             $emailuser = new \stdClass();
                             $emailuser->id = -1;
                             $emailuser->email = $email;
-                            email_to_user($emailuser, fullname($userfrom), $subject, $message, $messagehtml, $tempfile,
-                                $filename);
+                            email_to_user($emailuser, fullname($userfrom), html_entity_decode($subject), $message,
+                                $messagehtml, $tempfile, $filename);
                         }
                     }
                 }
